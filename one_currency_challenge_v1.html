@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>One Currency Challenge</title>
+<meta name="description" content="A simple personal one-unit currency challenge: ₹1, $1, €1, £1 and more.">
+<style>
+:root{
+  --bg:#f7f8fc;--card:#fff;--text:#111827;--muted:#6b7280;--line:#e5e7eb;
+  --primary:#2563eb;--primary2:#7c3aed;--shadow:0 18px 50px rgba(17,24,39,.10);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#eef4ff 0,#f8fafc 38%,#fff 100%);color:var(--text)}
+.container{width:min(1080px,92%);margin:auto}
+nav{height:72px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-weight:900;font-size:20px;letter-spacing:-.5px}.logo span{color:var(--primary)}
+.nav-pill{border:1px solid var(--line);background:#fff;padding:9px 14px;border-radius:999px;font-size:13px;color:var(--muted)}
+.hero{text-align:center;padding:68px 0 34px}
+.badge{display:inline-flex;gap:7px;align-items:center;background:#eaf1ff;color:#1d4ed8;border:1px solid #dbe7ff;padding:8px 13px;border-radius:999px;font-size:13px;font-weight:700}
+h1{font-size:clamp(42px,7vw,76px);line-height:.98;letter-spacing:-3px;margin:22px auto 18px;max-width:900px}
+.gradient{background:linear-gradient(90deg,#2563eb,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{max-width:650px;margin:0 auto;color:var(--muted);font-size:18px;line-height:1.65}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);padding:28px;margin:28px 0}
+.panel h2{margin:0 0 8px;font-size:25px}.sub{color:var(--muted);margin:0 0 22px}
+.currencies{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.currency{border:1px solid var(--line);background:#fff;border-radius:18px;padding:16px 10px;cursor:pointer;transition:.2s;text-align:center}
+.currency:hover,.currency.active{border-color:#93c5fd;box-shadow:0 8px 25px rgba(37,99,235,.12);transform:translateY(-2px)}
+.flag{font-size:27px}.symbol{font-size:25px;font-weight:900;margin:7px 0 2px}.name{font-size:12px;color:var(--muted)}
+.challenge{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:stretch}
+.amount{font-size:60px;font-weight:900;letter-spacing:-2px;margin:4px 0}
+.cta{width:100%;border:0;border-radius:16px;padding:16px;font-size:17px;font-weight:800;background:linear-gradient(90deg,#2563eb,#7c3aed);color:#fff;cursor:pointer;box-shadow:0 12px 25px rgba(37,99,235,.22)}
+.cta:hover{filter:brightness(1.05)}.note{font-size:12px;color:var(--muted);margin-top:11px;line-height:1.5}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.stat{padding:20px;background:#f8fafc;border:1px solid var(--line);border-radius:18px}.stat b{font-size:28px}.stat span{display:block;color:var(--muted);font-size:12px;margin-top:5px}
+.progress{height:12px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin:15px 0}.bar{height:100%;width:0;background:linear-gradient(90deg,#2563eb,#7c3aed);transition:width .4s}
+.activity{display:flex;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}.activity:last-child{border:0}.dot{width:9px;height:9px;border-radius:50%;background:#22c55e}.activity small{color:var(--muted)}
+footer{padding:35px 0 55px;text-align:center;color:var(--muted);font-size:13px}
+@media(max-width:760px){
+  .currencies{grid-template-columns:repeat(3,1fr)}.challenge{grid-template-columns:1fr}.stats{grid-template-columns:1fr}
+  .hero{padding-top:45px}h1{letter-spacing:-2px}.panel{padding:20px;border-radius:22px}
+}
+</style>
+</head>
+<body>
+<header class="container">
+<nav><div class="logo">One<span>Challenge</span></div><div class="nav-pill">Version 1 • Personal</div></nav>
+</header>
+
+<main class="container">
+<section class="hero">
+  <div class="badge">🌍 One unit. One person. One challenge.</div>
+  <h1>Make a small contribution.<br><span class="gradient">Create a big number.</span></h1>
+  <p>Choose your currency and join the One Currency Challenge with just one unit of your local currency.</p>
+</section>
+
+<section class="panel">
+  <h2>Choose your currency</h2>
+  <p class="sub">Your selected currency determines the challenge amount.</p>
+  <div class="currencies" id="currencies"></div>
+</section>
+
+<section class="panel">
+  <div class="challenge">
+    <div>
+      <div class="sub">Your challenge amount</div>
+      <div class="amount" id="amount">₹1</div>
+      <button class="cta" id="joinBtn">Join the ₹1 Challenge</button>
+      <div class="note">Demo mode: this button records participation locally in your browser. No real payment is processed in Version 1.</div>
+    </div>
+    <div>
+      <div class="sub">Challenge progress</div>
+      <div class="stats">
+        <div class="stat"><b id="participants">1,248</b><span>Participants</span></div>
+        <div class="stat"><b id="total">₹1,248</b><span>Demo total</span></div>
+        <div class="stat"><b>1M</b><span>Goal</span></div>
+      </div>
+      <div class="progress"><div class="bar" id="bar"></div></div>
+      <div class="sub" id="percent">0.12% of the goal</div>
+    </div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Recent activity</h2>
+  <p class="sub">Demo activity shown for the prototype.</p>
+  <div id="activity"></div>
+</section>
+</main>
+
+<footer>© 2026 OneChallenge • Personal prototype • No real payments are processed.</footer>
+
+<script>
+const currencies=[
+ {code:"INR",symbol:"₹",name:"Indian Rupee",flag:"🇮🇳"},
+ {code:"USD",symbol:"$",name:"US Dollar",flag:"🇺🇸"},
+ {code:"EUR",symbol:"€",name:"Euro",flag:"🇪🇺"},
+ {code:"GBP",symbol:"£",name:"British Pound",flag:"🇬🇧"},
+ {code:"JPY",symbol:"¥",name:"Japanese Yen",flag:"🇯🇵"},
+ {code:"AED",symbol:"د.إ",name:"UAE Dirham",flag:"🇦🇪"},
+ {code:"CAD",symbol:"C$",name:"Canadian Dollar",flag:"🇨🇦"},
+ {code:"AUD",symbol:"A$",name:"Australian Dollar",flag:"🇦🇺"},
+ {code:"SGD",symbol:"S$",name:"Singapore Dollar",flag:"🇸🇬"},
+ {code:"CHF",symbol:"CHF",name:"Swiss Franc",flag:"🇨🇭"}
+];
+
+let selected=currencies[0];
+let participants=Number(localStorage.getItem("oc_participants")||1248);
+
+const grid=document.getElementById("currencies");
+currencies.forEach(c=>{
+ const el=document.createElement("button");
+ el.className="currency"+(c.code==="INR"?" active":"");
+ el.innerHTML=`<div class="flag">${c.flag}</div><div class="symbol">${c.symbol}</div><div class="name">${c.code}</div>`;
+ el.onclick=()=>selectCurrency(c,el);
+ grid.appendChild(el);
+});
+
+function selectCurrency(c,el){
+ selected=c;
+ document.querySelectorAll(".currency").forEach(x=>x.classList.remove("active"));
+ el.classList.add("active");
+ update();
+}
+function update(){
+ document.getElementById("amount").textContent=selected.symbol+"1";
+ document.getElementById("joinBtn").textContent="Join the "+selected.symbol+"1 Challenge";
+ document.getElementById("participants").textContent=participants.toLocaleString();
+ document.getElementById("total").textContent=selected.symbol+participants.toLocaleString();
+ const pct=Math.min(participants/1000000*100,100);
+ document.getElementById("bar").style.width=pct+"%";
+ document.getElementById("percent").textContent=pct.toFixed(2)+"% of the goal";
+}
+document.getElementById("joinBtn").onclick=()=>{
+ participants++;
+ localStorage.setItem("oc_participants",participants);
+ addActivity();
+ update();
+};
+function addActivity(){
+ const a=document.createElement("div"); a.className="activity";
+ a.innerHTML=`<div class="dot"></div><div><b>Someone joined</b> the ${selected.symbol}1 challenge<br><small>Just now • Demo participation</small></div>`;
+ document.getElementById("activity").prepend(a);
+}
+["INR","USD","EUR","GBP"].forEach((x,i)=>{
+ const c=currencies.find(v=>v.code===x);
+ const a=document.createElement("div");a.className="activity";
+ a.innerHTML=`<div class="dot"></div><div><b>Participant #${1248-i}</b> joined the ${c.symbol}1 challenge<br><small>${i+1} minute${i?"s":""} ago • Demo activity</small></div>`;
+ document.getElementById("activity").appendChild(a);
+});
+update();
+</script>
+</body>
+</html>
