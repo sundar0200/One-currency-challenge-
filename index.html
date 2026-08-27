@@ -712,10 +712,16 @@ const SUPABASE_URL =
 */
 
 const SUPABASE_URL =
-    "https://ucqamsjvvnqwpvjggbbq.supabase.co";
+    window.OC_SUPABASE_URL;
 
 const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_v44qa8_9Kc6osHQ-dXZupA_3fSz-wCF";
+    window.OC_SUPABASE_PUBLISHABLE_KEY;
+
+const supabaseClient =
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
 
 /* Create Supabase client */
 
