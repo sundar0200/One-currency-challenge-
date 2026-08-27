@@ -1,36 +1,1166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>One Currency Challenge — Global Dashboard</title>
-<meta name="description" content="A global one-unit currency participation challenge with live statistics.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>One Currency Challenge | Global Participation</title>
+
+<meta name="description"
+      content="Join the One Currency Challenge and become part of a global participation experiment.">
+
 <style>
-:root{--bg:#07111f;--panel:#0d1b2e;--text:#f5f8ff;--muted:#9eb0c8;--line:#1e3550;--accent:#5eead4;--accent2:#60a5fa;--good:#34d399;--warn:#fbbf24}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:radial-gradient(circle at 20% 0%,#12345a 0,#07111f 38%),var(--bg);color:var(--text)}.wrap{width:min(1120px,92%);margin:auto}nav{height:72px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}.brand{font-weight:900;font-size:20px}.brand span{color:var(--accent)}.navlinks a{color:var(--muted);text-decoration:none;margin-left:22px;font-size:14px}.hero{text-align:center;padding:70px 0 38px}.badge{display:inline-flex;padding:8px 13px;border:1px solid var(--line);border-radius:999px;background:#0c1c30;color:#b9c9dc;font-size:13px}h1{font-size:clamp(38px,7vw,72px);line-height:1.02;margin:18px 0 14px;letter-spacing:-2px}.gradient{background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{max-width:700px;margin:0 auto;color:var(--muted);font-size:17px;line-height:1.65}.status{margin:20px auto 0;color:var(--muted);font-size:13px}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--warn);margin-right:7px}.dot.ok{background:var(--good)}.global{background:linear-gradient(135deg,#102a47,#0d1b2e);border:1px solid var(--line);border-radius:24px;padding:30px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.22)}.global .label{color:var(--muted);text-transform:uppercase;letter-spacing:2px;font-size:12px}.global .number{font-size:clamp(48px,9vw,90px);font-weight:900;line-height:1;margin:12px 0}.global small{color:var(--muted)}.section{padding:42px 0}.section h2{text-align:center;margin:0 0 8px;font-size:30px}.section>p{text-align:center;color:var(--muted);margin:0 0 24px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:rgba(13,27,46,.88);border:1px solid var(--line);border-radius:18px;padding:20px}.currency{display:flex;align-items:center;justify-content:space-between}.flag{font-size:28px}.code{font-weight:800;font-size:13px;color:var(--muted)}.currency-name{margin:12px 0 6px;font-size:15px}.count{font-size:30px;font-weight:850}.unit{color:var(--muted);font-size:12px}.actions{display:flex;justify-content:center;gap:10px;margin-top:28px;flex-wrap:wrap}select,button{font:inherit}select{background:#0b1a2c;color:var(--text);border:1px solid var(--line);padding:13px 15px;border-radius:12px;min-width:220px}button{border:0;border-radius:12px;padding:13px 20px;font-weight:800;cursor:pointer;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#04101c}button:disabled{opacity:.55;cursor:not-allowed}.message{text-align:center;min-height:24px;color:var(--muted);margin-top:12px;font-size:14px}.milestones{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.milestone{padding:18px;border:1px solid var(--line);border-radius:16px;background:#0b192a;text-align:center}.milestone strong{display:block;font-size:20px}.milestone span{display:block;color:var(--muted);font-size:12px;margin-top:5px}.milestone.done{border-color:#1d8065}.note{background:#0b192a;border:1px solid var(--line);border-radius:16px;padding:18px;color:var(--muted);line-height:1.6}footer{padding:40px 0 55px;text-align:center;color:#7287a1;font-size:12px}@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.milestones{grid-template-columns:repeat(2,1fr)}.navlinks{display:none}}@media(max-width:520px){.grid{gap:10px}.card{padding:15px}.count{font-size:25px}.hero{padding-top:48px}}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f7fb;
+    color: #14213d;
+    line-height: 1.6;
+}
+
+.wrap {
+    max-width: 1100px;
+    margin: auto;
+    padding: 0 20px;
+}
+
+/* HEADER */
+
+header {
+    background: #14213d;
+    color: white;
+    padding: 18px 0;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.brand {
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.brand span {
+    color: #fca311;
+}
+
+.navlinks {
+    display: flex;
+    gap: 18px;
+}
+
+.navlinks a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.navlinks a:hover {
+    color: #fca311;
+}
+
+/* STATUS */
+
+.status {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    background: #e8f5e9;
+    color: #16803c;
+}
+
+/* HERO */
+
+.hero {
+    text-align: center;
+    padding: 70px 20px 50px;
+}
+
+.eyebrow {
+    display: inline-block;
+    background: #fff3cd;
+    color: #856404;
+    padding: 7px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    margin-bottom: 18px;
+}
+
+.hero h1 {
+    font-size: clamp(38px, 7vw, 72px);
+    line-height: 1.05;
+    margin-bottom: 20px;
+}
+
+.hero h1 .gradient {
+    background: linear-gradient(90deg, #fca311, #e85d04);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.hero p {
+    max-width: 700px;
+    margin: auto;
+    color: #667085;
+    font-size: 18px;
+}
+
+/* CARD */
+
+.card {
+    background: white;
+    border-radius: 18px;
+    padding: 30px;
+    box-shadow: 0 8px 30px rgba(20, 33, 61, 0.08);
+    border: 1px solid #e9edf5;
+}
+
+.card h2 {
+    margin-bottom: 8px;
+}
+
+.muted {
+    color: #667085;
+}
+
+/* CURRENCIES */
+
+.section {
+    padding: 25px 0;
+}
+
+.currency-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.currency {
+    border: 2px solid #e5e7eb;
+    background: white;
+    border-radius: 15px;
+    padding: 20px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.currency:hover {
+    transform: translateY(-3px);
+    border-color: #fca311;
+}
+
+.currency.selected {
+    border-color: #fca311;
+    background: #fff8e8;
+}
+
+.currency .symbol {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.currency strong {
+    display: block;
+    margin-top: 5px;
+}
+
+.currency small {
+    color: #667085;
+}
+
+/* JOIN */
+
+.join-area {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.selected-text {
+    margin-bottom: 15px;
+    color: #667085;
+}
+
+.join-btn {
+    border: none;
+    background: #fca311;
+    color: #14213d;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 15px 35px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.join-btn:hover {
+    transform: translateY(-2px);
+    background: #ffb52e;
+}
+
+.join-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* COUNTER */
+
+.counter-section {
+    text-align: center;
+    padding: 35px 0;
+}
+
+.counter-label {
+    color: #667085;
+    font-size: 15px;
+}
+
+.counter {
+    font-size: clamp(50px, 9vw, 90px);
+    font-weight: bold;
+    color: #14213d;
+    line-height: 1.1;
+    margin: 10px 0;
+}
+
+.live {
+    display: inline-block;
+    background: #e8f5e9;
+    color: #16803c;
+    padding: 7px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+/* STATS */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.stat {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 18px;
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.stat-label {
+    color: #667085;
+    font-size: 13px;
+}
+
+/* HOW */
+
+.how-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.step {
+    text-align: center;
+}
+
+.step-icon {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto auto 15px;
+    border-radius: 50%;
+    background: #14213d;
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* MESSAGE */
+
+.message {
+    margin-top: 20px;
+    padding: 14px;
+    border-radius: 10px;
+    display: none;
+    text-align: center;
+}
+
+.message.success {
+    display: block;
+    background: #e8f5e9;
+    color: #166534;
+}
+
+.message.error {
+    display: block;
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* FOOTER */
+
+footer {
+    text-align: center;
+    padding: 40px 20px;
+    margin-top: 30px;
+    color: #667085;
+    font-size: 13px;
+}
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+    .currency-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .how-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .navlinks {
+        display: none;
+    }
+
+}
+
+@media (max-width: 450px) {
+
+    .currency-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    .hero {
+        padding-top: 45px;
+    }
+
+}
+
 </style>
 </head>
+
 <body>
-<header><div class="wrap"><nav><div class="brand">ONE<span>CURRENCY</span> CHALLENGE</div><div class="navlinks"><a href="#currencies">Currencies</a><a href="#milestones">Milestones</a><a href="#how">How it works</a></div></nav></div></header>
-<main class="wrap">
-<section class="hero"><div class="badge">🌍 V3.1 • Live Global Dashboard</div><h1>One small unit.<br><span class="gradient">One global challenge.</span></h1><p>Choose a currency, participate with one unit, and watch the global participation numbers grow from the real database.</p><div class="status"><span id="statusDot" class="dot"></span><span id="statusText">Connecting to live database…</span></div></section>
-<section class="global"><div class="label">Total global participants</div><div id="globalTotal" class="number">—</div><small>Live count from Supabase</small></section>
-<section class="section" id="currencies"><h2>🌎 Currency challenges</h2><p>Every card shows the real participant count for that currency.</p><div id="currencyGrid" class="grid"></div><div class="actions"><select id="currencySelect" aria-label="Choose a currency"></select><button id="joinBtn">Join the challenge</button></div><div id="message" class="message"></div></section>
-<section class="section" id="milestones"><h2>🏆 Global milestones</h2><p>Small steps toward a very big number.</p><div id="milestoneGrid" class="milestones"></div></section>
-<section class="section" id="how"><h2>How it works</h2><p>Three simple steps.</p><div class="grid"><div class="card"><b>1. Choose</b><p class="unit">Select one currency and its one-unit challenge.</p></div><div class="card"><b>2. Participate</b><p class="unit">Press the button to record one participation in the database.</p></div><div class="card"><b>3. Watch</b><p class="unit">The global dashboard refreshes with the latest real counts.</p></div><div class="card"><b>4. Share</b><p class="unit">Invite others to take part in the experiment.</p></div></div></section>
-<section class="section"><div class="note"><b>Personal-use project:</b> This demo records participation only. It does not process payments or collect money.</div></section>
-</main><footer>© 2026 One Currency Challenge • Version 3.1 • No payment is processed by this website.</footer>
-<script src="config.js"></script>
+
+<header>
+
+<div class="wrap">
+
+<nav>
+
+<div class="brand">
+ONE<span>CURRENCY</span> CHALLENGE
+</div>
+
+<div class="navlinks">
+<a href="#challenge">Challenge</a>
+<a href="#stats">Stats</a>
+<a href="#how">How it works</a>
+</div>
+
+</nav>
+
+</div>
+
+</header>
+
+
+<main>
+
+<!-- HERO -->
+
+<section class="hero wrap">
+
+<div class="eyebrow">
+🌍 A GLOBAL PARTICIPATION EXPERIMENT
+</div>
+
+<h1>
+One Small Unit.<br>
+<span class="gradient">One Global Challenge.</span>
+</h1>
+
+<p>
+Choose your currency and become part of a simple global participation experiment.
+</p>
+
+</section>
+
+
+<!-- CHALLENGE -->
+
+<section class="section wrap" id="challenge">
+
+<div class="card">
+
+<h2>Choose Your Currency</h2>
+
+<p class="muted">
+Select one currency and join the challenge.
+</p>
+
+
+<div class="currency-grid" id="currencies">
+
+<div class="currency selected" data-code="INR" onclick="selectCurrency('INR')">
+
+<div class="symbol">₹</div>
+
+<strong>Indian Rupee</strong>
+
+<small>INR</small>
+
+</div>
+
+
+<div class="currency" data-code="USD" onclick="selectCurrency('USD')">
+
+<div class="symbol">$</div>
+
+<strong>US Dollar</strong>
+
+<small>USD</small>
+
+</div>
+
+
+<div class="currency" data-code="EUR" onclick="selectCurrency('EUR')">
+
+<div class="symbol">€</div>
+
+<strong>Euro</strong>
+
+<small>EUR</small>
+
+</div>
+
+
+<div class="currency" data-code="GBP" onclick="selectCurrency('GBP')">
+
+<div class="symbol">£</div>
+
+<strong>British Pound</strong>
+
+<small>GBP</small>
+
+</div>
+
+
+<div class="currency" data-code="JPY" onclick="selectCurrency('JPY')">
+
+<div class="symbol">¥</div>
+
+<strong>Japanese Yen</strong>
+
+<small>JPY</small>
+
+</div>
+
+</div>
+
+
+<div class="join-area">
+
+<div class="selected-text">
+Selected currency:
+<strong id="selectedCurrency">INR ₹</strong>
+</div>
+
+<button
+id="join"
+class="join-btn"
+onclick="joinChallenge()">
+
+Join the Challenge
+
+</button>
+
+<div id="message" class="message"></div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- LIVE COUNTER -->
+
+<section class="counter-section wrap" id="stats">
+
+<div class="card">
+
+<div class="counter-label">
+🌍 LIVE GLOBAL PARTICIPANTS
+</div>
+
+<div id="total" class="counter">
+0
+</div>
+
+<div class="live" id="status">
+🟡 Connecting to database...
+</div>
+
+
+<div class="stats">
+
+<div class="stat">
+
+<div id="inrCount" class="stat-number">
+0
+</div>
+
+<div class="stat-label">
+🇮🇳 INR Participants
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div id="usdCount" class="stat-number">
+0
+</div>
+
+<div class="stat-label">
+🇺🇸 USD Participants
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div id="eurCount" class="stat-number">
+0
+</div>
+
+<div class="stat-label">
+🇪🇺 EUR Participants
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div id="gbpCount" class="stat-number">
+0
+</div>
+
+<div class="stat-label">
+🇬🇧 GBP Participants
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div id="jpyCount" class="stat-number">
+0
+</div>
+
+<div class="stat-label">
+🇯🇵 JPY Participants
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- HOW IT WORKS -->
+
+<section class="section wrap" id="how">
+
+<div class="card">
+
+<h2>How It Works</h2>
+
+<p class="muted">
+Three simple steps.
+</p>
+
+
+<div class="how-grid">
+
+<div class="step">
+
+<div class="step-icon">
+1
+</div>
+
+<h3>Choose</h3>
+
+<p class="muted">
+Choose your currency.
+</p>
+
+</div>
+
+
+<div class="step">
+
+<div class="step-icon">
+2
+</div>
+
+<h3>Join</h3>
+
+<p class="muted">
+Press the Join button.
+</p>
+
+</div>
+
+
+<div class="step">
+
+<div class="step-icon">
+3
+</div>
+
+<h3>Count</h3>
+
+<p class="muted">
+Your participation becomes part of the global counter.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+</main>
+
+
+<footer>
+
+One Currency Challenge • Version 3.1.2<br>
+
+Participation demo • No payment is processed by this website.
+
+</footer>
+
+
+
+<!-- SUPABASE JAVASCRIPT LIBRARY -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
 <script>
-const CURRENCIES=[['INR','₹','Indian Rupee','🇮🇳'],['USD','$','US Dollar','🇺🇸'],['EUR','€','Euro','🇪🇺'],['GBP','£','British Pound','🇬🇧'],['JPY','¥','Japanese Yen','🇯🇵'],['CHF','CHF','Swiss Franc','🇨🇭'],['CAD','C$','Canadian Dollar','🇨🇦'],['AUD','A$','Australian Dollar','🇦🇺']];
-const $=id=>document.getElementById(id),grid=$('currencyGrid'),select=$('currencySelect'),joinBtn=$('joinBtn'),msg=$('message');
-CURRENCIES.forEach(([code,symbol,name,flag])=>select.insertAdjacentHTML('beforeend',`<option value="${code}">${flag} ${code} — ${symbol} ${name}</option>`));
-function getConfig(){const c=window.SUPABASE_CONFIG||window.supabaseConfig||{};return{url:c.url||c.supabaseUrl||window.SUPABASE_URL||window.supabaseUrl||'',key:c.anonKey||c.publishableKey||c.key||window.SUPABASE_ANON_KEY||window.SUPABASE_KEY||window.supabaseKey||''}}
-let cfg=getConfig(),sb=null;
-async function loadSupabase(){if(!cfg.url||!cfg.key)throw Error('Supabase configuration not found in config.js');if(!window.supabase)await new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';s.onload=resolve;s.onerror=()=>reject(Error('Could not load Supabase client'));document.head.appendChild(s)});sb=window.supabase.createClient(cfg.url,cfg.key)}
-async function getStats(code){const {data,error}=await sb.rpc('get_challenge_stats',{p_currency:code});if(error)throw error;return Array.isArray(data)?(data[0]||{}):(data||{})}
-function valueOf(o,names){for(const n of names)if(o&&o[n]!==undefined&&o[n]!==null)return Number(o[n])||0;return 0}
-function renderCards(stats){grid.innerHTML='';stats.forEach(s=>{const c=CURRENCIES.find(x=>x[0]===s.code);grid.insertAdjacentHTML('beforeend',`<div class="card"><div class="currency"><span class="flag">${c[3]}</span><span class="code">${c[0]}</span></div><div class="currency-name">${c[2]}</div><div class="count">${s.count.toLocaleString()}</div><div class="unit">participants</div></div>`)})}
-function renderMilestones(total){const ms=[100,1000,10000,100000,1000000];$('milestoneGrid').innerHTML=ms.map(n=>{const done=total>=n;return `<div class="milestone ${done?'done':''}"><strong>${done?'✓ ':''}${n.toLocaleString()}</strong><span>${done?'Reached':'Target participants'}</span></div>`}).join('')}
-async function refresh(){joinBtn.disabled=true;const results=[];for(const [code] of CURRENCIES){try{const d=await getStats(code);results.push({code,count:valueOf(d,['selected_currency_participants','currency_count','count','participants'])})}catch(e){console.error('Stats error',code,e);results.push({code,count:0})}}renderCards(results);try{const d=await getStats('INR');const total=valueOf(d,['total_participants','total_count','total']);$('globalTotal').textContent=total.toLocaleString();renderMilestones(total)}catch(e){console.error(e)}$('statusDot').classList.add('ok');$('statusText').textContent='Live database connected';joinBtn.disabled=false}
-joinBtn.addEventListener('click',async()=>{const code=select.value;joinBtn.disabled=true;msg.textContent='Recording your participation…';try{const {error}=await sb.rpc('join_challenge',{p_currency:code});if(error)throw error;msg.textContent=`✓ ${code} participation recorded successfully.`;await refresh()}catch(e){console.error(e);msg.textContent='Could not record participation. Please try again.';joinBtn.disabled=false}});
-(async()=>{try{await loadSupabase();await refresh()}catch(e){console.error(e);$('statusText').textContent='Database connection needs attention';msg.textContent='Check that your existing config.js contains the Supabase URL and publishable/anon key.'}})();
-</script></body></html>
+
+/* =========================================================
+   SUPABASE CONFIGURATION
+   ========================================================= */
+
+const SUPABASE_URL =
+    "https://ucqamsjvvnqwpvjgbbq.supabase.co";
+
+
+/*
+   IMPORTANT:
+
+   Replace the value below with your SUPABASE PUBLISHABLE KEY.
+
+   Do NOT use the sb_secret key.
+*/
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "PASTE_YOUR_PUBLISHABLE_KEY_HERE";
+
+
+/* Create Supabase client */
+
+const supabaseClient =
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+/* =========================================================
+   GLOBAL VARIABLES
+   ========================================================= */
+
+let selectedCurrency = "INR";
+
+
+/* =========================================================
+   CURRENCY SELECTION
+   ========================================================= */
+
+function selectCurrency(currency) {
+
+    selectedCurrency = currency;
+
+
+    /* Remove selected state */
+
+    document
+        .querySelectorAll(".currency")
+        .forEach(function(card) {
+
+            card.classList.remove("selected");
+
+        });
+
+
+    /* Add selected state */
+
+    const selectedCard =
+        document.querySelector(
+            '.currency[data-code="' + currency + '"]'
+        );
+
+
+    if (selectedCard) {
+        selectedCard.classList.add("selected");
+    }
+
+
+    /* Currency symbols */
+
+    const symbols = {
+
+        INR: "₹",
+        USD: "$",
+        EUR: "€",
+        GBP: "£",
+        JPY: "¥"
+
+    };
+
+
+    document.getElementById("selectedCurrency")
+        .textContent =
+        currency + " " + symbols[currency];
+
+}
+
+
+/* =========================================================
+   SHOW MESSAGE
+   ========================================================= */
+
+function showMessage(text, type) {
+
+    const message =
+        document.getElementById("message");
+
+    message.textContent = text;
+
+    message.className =
+        "message " + type;
+
+}
+
+
+/* =========================================================
+   UPDATE COUNTERS
+   ========================================================= */
+
+function updateCounters(data) {
+
+    if (!data) {
+        return;
+    }
+
+
+    /* Total */
+
+    if (data.total_participants !== undefined) {
+
+        document.getElementById("total")
+            .textContent =
+            Number(
+                data.total_participants
+            ).toLocaleString();
+
+    }
+
+
+    /* Currency counters */
+
+    if (data.currency_counts) {
+
+        const counts =
+            data.currency_counts;
+
+
+        document.getElementById("inrCount")
+            .textContent =
+            Number(
+                counts.INR || 0
+            ).toLocaleString();
+
+
+        document.getElementById("usdCount")
+            .textContent =
+            Number(
+                counts.USD || 0
+            ).toLocaleString();
+
+
+        document.getElementById("eurCount")
+            .textContent =
+            Number(
+                counts.EUR || 0
+            ).toLocaleString();
+
+
+        document.getElementById("gbpCount")
+            .textContent =
+            Number(
+                counts.GBP || 0
+            ).toLocaleString();
+
+
+        document.getElementById("jpyCount")
+            .textContent =
+            Number(
+                counts.JPY || 0
+            ).toLocaleString();
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD GLOBAL STATS
+   ========================================================= */
+
+async function loadStats() {
+
+    try {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .rpc("get_challenge_stats");
+
+
+        if (error) {
+
+            console.error(
+                "Stats error:",
+                error
+            );
+
+            throw error;
+
+        }
+
+
+        console.log(
+            "Challenge stats:",
+            data
+        );
+
+
+        /*
+          Your SQL function returns:
+
+          total_participants
+          selected_currency_participants
+
+          Therefore update the main counter.
+        */
+
+        if (data) {
+
+            document.getElementById("total")
+                .textContent =
+                Number(
+                    data.total_participants || 0
+                ).toLocaleString();
+
+
+            document.getElementById("status")
+                .textContent =
+                "🟢 Live database connected";
+
+        }
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        document.getElementById("status")
+            .textContent =
+            "🔴 Database connection error";
+
+    }
+
+}
+
+
+/* =========================================================
+   JOIN CHALLENGE
+   ========================================================= */
+
+async function joinChallenge() {
+
+    const button =
+        document.getElementById("join");
+
+
+    /* Disable button */
+
+    button.disabled = true;
+
+    button.textContent =
+        "Joining...";
+
+
+    showMessage(
+        "Recording your participation...",
+        "success"
+    );
+
+
+    try {
+
+        console.log(
+            "Joining:",
+            selectedCurrency
+        );
+
+
+        /*
+          Call Supabase PostgreSQL function:
+
+          public.join_challenge('INR')
+        */
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .rpc(
+                "join_challenge",
+                {
+                    p_currency:
+                        selectedCurrency
+                }
+            );
+
+
+        /* Check for error */
+
+        if (error) {
+
+            console.error(
+                "Supabase RPC error:",
+                error
+            );
+
+            throw error;
+
+        }
+
+
+        console.log(
+            "Participation recorded:",
+            data
+        );
+
+
+        /*
+          Your function returns:
+
+          participation_id
+          total_participants
+          selected_currency_participants
+        */
+
+
+        const total =
+            data.total_participants || 0;
+
+
+        const selectedCount =
+            data.selected_currency_participants || 0;
+
+
+        /* Update total */
+
+        document.getElementById("total")
+            .textContent =
+            Number(total).toLocaleString();
+
+
+        /* Update selected currency counter */
+
+        if (selectedCurrency === "INR") {
+
+            document.getElementById("inrCount")
+                .textContent =
+                Number(selectedCount)
+                    .toLocaleString();
+
+        }
+
+
+        if (selectedCurrency === "USD") {
+
+            document.getElementById("usdCount")
+                .textContent =
+                Number(selectedCount)
+                    .toLocaleString();
+
+        }
+
+
+        if (selectedCurrency === "EUR") {
+
+            document.getElementById("eurCount")
+                .textContent =
+                Number(selectedCount)
+                    .toLocaleString();
+
+        }
+
+
+        if (selectedCurrency === "GBP") {
+
+            document.getElementById("gbpCount")
+                .textContent =
+                Number(selectedCount)
+                    .toLocaleString();
+
+        }
+
+
+        if (selectedCurrency === "JPY") {
+
+            document.getElementById("jpyCount")
+                .textContent =
+                Number(selectedCount)
+                    .toLocaleString();
+
+        }
+
+
+        /* Success */
+
+        showMessage(
+            "🎉 Participation recorded successfully! You are participant #" +
+            data.participation_id +
+            ".",
+            "success"
+        );
+
+
+        document.getElementById("status")
+            .textContent =
+            "🟢 Live database connected";
+
+
+    } catch (error) {
+
+        console.error(
+            "Could not record participation:",
+            error
+        );
+
+
+        showMessage(
+            "❌ Could not record participation. Please try again.",
+            "error"
+        );
+
+    } finally {
+
+        button.disabled = false;
+
+        button.textContent =
+            "Join the Challenge";
+
+    }
+
+}
+
+
+/* =========================================================
+   START APPLICATION
+   ========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        console.log(
+            "One Currency Challenge V3.1.2 loaded."
+        );
+
+
+        /*
+          Make sure INR is selected.
+        */
+
+        selectCurrency("INR");
+
+
+        /*
+          Load database counter.
+        */
+
+        loadStats();
+
+    }
+);
+
+</script>
+
+</body>
+</html>
