@@ -4,552 +4,151 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>One Currency Challenge</title>
-<meta name="description" content="One Currency Challenge - a global participation experiment">
+<meta name="description" content="A simple personal one-unit currency challenge: ₹1, $1, €1, £1 and more.">
 <style>
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f5f7fb;
-    color: #14213d;
-  }
-  .wrap {
-    max-width: 1050px;
-    margin: auto;
-    padding: 20px;
-  }
-  header {
-    background: #14213d;
-    color: white;
-  }
-  nav {
-    max-width: 1050px;
-    margin: auto;
-    padding: 18px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-  }
-  .brand {
-    font-size: 20px;
-    font-weight: 800;
-    letter-spacing: .5px;
-  }
-  .brand span { color: #ffd166; }
-  nav a {
-    color: white;
-    text-decoration: none;
-    margin-left: 15px;
-    font-size: 14px;
-  }
-  .hero {
-    text-align: center;
-    padding: 65px 20px 45px;
-  }
-  .eyebrow {
-    display: inline-block;
-    background: #e9f7ef;
-    color: #16834b;
-    border-radius: 30px;
-    padding: 8px 14px;
-    font-size: 14px;
-    font-weight: 700;
-  }
-  h1 {
-    font-size: clamp(38px, 7vw, 70px);
-    line-height: 1.05;
-    margin: 18px 0;
-  }
-  h1 span { color: #16834b; }
-  .hero p {
-    max-width: 700px;
-    margin: auto;
-    color: #667085;
-    font-size: 18px;
-    line-height: 1.6;
-  }
-  .card {
-    background: white;
-    border-radius: 18px;
-    padding: 28px;
-    margin: 22px 0;
-    box-shadow: 0 8px 30px rgba(20,33,61,.08);
-  }
-  h2 { margin-top: 0; }
-  .muted { color: #667085; line-height: 1.55; }
-  .currencies {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 12px;
-    margin-top: 22px;
-  }
-  .currency {
-    border: 2px solid #e5e7eb;
-    background: white;
-    border-radius: 14px;
-    padding: 17px 10px;
-    cursor: pointer;
-    text-align: center;
-    font-weight: 700;
-    transition: .2s;
-  }
-  .currency:hover { transform: translateY(-2px); }
-  .currency.selected {
-    border-color: #16834b;
-    background: #e9f7ef;
-  }
-  .symbol {
-    display: block;
-    font-size: 28px;
-    margin-bottom: 5px;
-  }
-  .join {
-    width: 100%;
-    margin-top: 20px;
-    border: 0;
-    border-radius: 13px;
-    padding: 17px;
-    font-size: 17px;
-    font-weight: 800;
-    cursor: pointer;
-    background: #16834b;
-    color: white;
-  }
-  .join:disabled {
-    opacity: .6;
-    cursor: not-allowed;
-  }
-  .status {
-    display: inline-block;
-    margin-top: 12px;
-    padding: 7px 11px;
-    border-radius: 20px;
-    background: #f2f4f7;
-    color: #667085;
-    font-size: 13px;
-  }
-  .status.ok {
-    background: #e9f7ef;
-    color: #16834b;
-  }
-  .status.error {
-    background: #fef3f2;
-    color: #b42318;
-  }
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    text-align: center;
-  }
-  .stat {
-    background: #f8fafc;
-    border-radius: 15px;
-    padding: 25px 10px;
-  }
-  .stat strong {
-    display: block;
-    font-size: 38px;
-    margin-bottom: 5px;
-  }
-  .how {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-  }
-  .step {
-    background: #f8fafc;
-    border-radius: 15px;
-    padding: 22px;
-  }
-  .step b {
-    display: block;
-    font-size: 18px;
-    margin-bottom: 8px;
-  }
-  #debug {
-    display: none;
-    white-space: pre-wrap;
-    word-break: break-word;
-    background: #111827;
-    color: #fca5a5;
-    border-radius: 12px;
-    padding: 15px;
-    margin-top: 15px;
-    font-family: monospace;
-    font-size: 12px;
-  }
-  footer {
-    text-align: center;
-    color: #667085;
-    padding: 35px 20px;
-    font-size: 13px;
-  }
-  @media (max-width: 700px) {
-    .currencies { grid-template-columns: repeat(2, 1fr); }
-    .how { grid-template-columns: 1fr; }
-    .stats { grid-template-columns: 1fr; }
-    nav { flex-direction: column; }
-    nav a { margin: 0 7px; }
-  }
+:root{
+  --bg:#f7f8fc;--card:#fff;--text:#111827;--muted:#6b7280;--line:#e5e7eb;
+  --primary:#2563eb;--primary2:#7c3aed;--shadow:0 18px 50px rgba(17,24,39,.10);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#eef4ff 0,#f8fafc 38%,#fff 100%);color:var(--text)}
+.container{width:min(1080px,92%);margin:auto}
+nav{height:72px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-weight:900;font-size:20px;letter-spacing:-.5px}.logo span{color:var(--primary)}
+.nav-pill{border:1px solid var(--line);background:#fff;padding:9px 14px;border-radius:999px;font-size:13px;color:var(--muted)}
+.hero{text-align:center;padding:68px 0 34px}
+.badge{display:inline-flex;gap:7px;align-items:center;background:#eaf1ff;color:#1d4ed8;border:1px solid #dbe7ff;padding:8px 13px;border-radius:999px;font-size:13px;font-weight:700}
+h1{font-size:clamp(42px,7vw,76px);line-height:.98;letter-spacing:-3px;margin:22px auto 18px;max-width:900px}
+.gradient{background:linear-gradient(90deg,#2563eb,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{max-width:650px;margin:0 auto;color:var(--muted);font-size:18px;line-height:1.65}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);padding:28px;margin:28px 0}
+.panel h2{margin:0 0 8px;font-size:25px}.sub{color:var(--muted);margin:0 0 22px}
+.currencies{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.currency{border:1px solid var(--line);background:#fff;border-radius:18px;padding:16px 10px;cursor:pointer;transition:.2s;text-align:center}
+.currency:hover,.currency.active{border-color:#93c5fd;box-shadow:0 8px 25px rgba(37,99,235,.12);transform:translateY(-2px)}
+.flag{font-size:27px}.symbol{font-size:25px;font-weight:900;margin:7px 0 2px}.name{font-size:12px;color:var(--muted)}
+.challenge{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:stretch}
+.amount{font-size:60px;font-weight:900;letter-spacing:-2px;margin:4px 0}
+.cta{width:100%;border:0;border-radius:16px;padding:16px;font-size:17px;font-weight:800;background:linear-gradient(90deg,#2563eb,#7c3aed);color:#fff;cursor:pointer;box-shadow:0 12px 25px rgba(37,99,235,.22)}
+.cta:hover{filter:brightness(1.05)}.note{font-size:12px;color:var(--muted);margin-top:11px;line-height:1.5}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.stat{padding:20px;background:#f8fafc;border:1px solid var(--line);border-radius:18px}.stat b{font-size:28px}.stat span{display:block;color:var(--muted);font-size:12px;margin-top:5px}
+.progress{height:12px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin:15px 0}.bar{height:100%;width:0;background:linear-gradient(90deg,#2563eb,#7c3aed);transition:width .4s}
+.activity{display:flex;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}.activity:last-child{border:0}.dot{width:9px;height:9px;border-radius:50%;background:#22c55e}.activity small{color:var(--muted)}
+footer{padding:35px 0 55px;text-align:center;color:var(--muted);font-size:13px}
+@media(max-width:760px){
+  .currencies{grid-template-columns:repeat(3,1fr)}.challenge{grid-template-columns:1fr}.stats{grid-template-columns:1fr}
+  .hero{padding-top:45px}h1{letter-spacing:-2px}.panel{padding:20px;border-radius:22px}
+}
 </style>
 </head>
-
 <body>
-
-<header>
-  <nav>
-    <div class="brand">ONE <span>CURRENCY</span> CHALLENGE</div>
-    <div>
-      <a href="#challenge">Challenge</a>
-      <a href="#milestones">Milestones</a>
-      <a href="#how">How it works</a>
-    </div>
-  </nav>
+<header class="container">
+<nav><div class="logo">One<span>Challenge</span></div><div class="nav-pill">Version 1 • Personal</div></nav>
 </header>
 
-<main class="wrap">
+<main class="container">
+<section class="hero">
+  <div class="badge">🌍 One unit. One person. One challenge.</div>
+  <h1>Make a small contribution.<br><span class="gradient">Create a big number.</span></h1>
+  <p>Choose your currency and join the One Currency Challenge with just one unit of your local currency.</p>
+</section>
 
-  <section class="hero">
-    <div class="eyebrow">🌍 A global participation experiment</div>
-    <h1>One small unit.<br><span>One global challenge.</span></h1>
-    <p>
-      Choose one currency and join the challenge.
-      This demo records participation in a Supabase database and displays
-      the live totals.
-    </p>
-  </section>
+<section class="panel">
+  <h2>Choose your currency</h2>
+  <p class="sub">Your selected currency determines the challenge amount.</p>
+  <div class="currencies" id="currencies"></div>
+</section>
 
-  <section class="card" id="challenge">
-    <h2>Choose your currency</h2>
-    <div class="muted">
-      Select one currency, then press the Join Challenge button.
+<section class="panel">
+  <div class="challenge">
+    <div>
+      <div class="sub">Your challenge amount</div>
+      <div class="amount" id="amount">₹1</div>
+      <button class="cta" id="joinBtn">Join the ₹1 Challenge</button>
+      <div class="note">Demo mode: this button records participation locally in your browser. No real payment is processed in Version 1.</div>
     </div>
-
-    <div class="currencies" id="currencies">
-      <button class="currency selected" data-code="INR">
-        <span class="symbol">₹</span>Indian Rupee
-      </button>
-      <button class="currency" data-code="USD">
-        <span class="symbol">$</span>US Dollar
-      </button>
-      <button class="currency" data-code="EUR">
-        <span class="symbol">€</span>Euro
-      </button>
-      <button class="currency" data-code="GBP">
-        <span class="symbol">£</span>British Pound
-      </button>
-      <button class="currency" data-code="JPY">
-        <span class="symbol">¥</span>Japanese Yen
-      </button>
-    </div>
-
-    <button class="join" id="joinButton">Join INR Challenge</button>
-    <div id="status" class="status">Connecting to database...</div>
-    <div id="debug"></div>
-  </section>
-
-  <section class="card">
-    <h2>🌐 Live Global Counter</h2>
-    <div class="stats">
-      <div class="stat">
-        <strong id="total">—</strong>
-        <span>Total Participants</span>
+    <div>
+      <div class="sub">Challenge progress</div>
+      <div class="stats">
+        <div class="stat"><b id="participants">1,248</b><span>Participants</span></div>
+        <div class="stat"><b id="total">₹1,248</b><span>Demo total</span></div>
+        <div class="stat"><b>1M</b><span>Goal</span></div>
       </div>
-      <div class="stat">
-        <strong id="selectedTotal">—</strong>
-        <span id="selectedLabel">INR Participants</span>
-      </div>
+      <div class="progress"><div class="bar" id="bar"></div></div>
+      <div class="sub" id="percent">0.12% of the goal</div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="card" id="milestones">
-    <h2>🏆 Global Milestones</h2>
-    <div class="muted">
-      Every participation moves the challenge one step closer to its global milestones.
-    </div>
-    <div style="margin-top:18px;font-size:17px;line-height:2;">
-      🌱 10 Participants<br>
-      🚀 100 Participants<br>
-      🌍 1,000 Participants<br>
-      ⭐ 10,000 Participants<br>
-      🏆 1,00,000 Participants
-    </div>
-  </section>
-
-  <section class="card" id="how">
-    <h2>How it works</h2>
-    <div class="how">
-      <div class="step">
-        <b>1. Choose</b>
-        <div class="muted">Select INR, USD, EUR, GBP or JPY.</div>
-      </div>
-      <div class="step">
-        <b>2. Join</b>
-        <div class="muted">Press the Join Challenge button to record one participation.</div>
-      </div>
-      <div class="step">
-        <b>3. Count</b>
-        <div class="muted">The counter is loaded from your Supabase database.</div>
-      </div>
-    </div>
-  </section>
-
+<section class="panel">
+  <h2>Recent activity</h2>
+  <p class="sub">Demo activity shown for the prototype.</p>
+  <div id="activity"></div>
+</section>
 </main>
 
-<footer>
-  One Currency Challenge • V3.1.3 • No payment is processed by this demo.
-</footer>
+<footer>© 2026 OneChallenge • Personal prototype • No real payments are processed.</footer>
 
 <script>
-/*
-==========================================================
-ONE CURRENCY CHALLENGE - V3.1.3
-==========================================================
+const currencies=[
+ {code:"INR",symbol:"₹",name:"Indian Rupee",flag:"🇮🇳"},
+ {code:"USD",symbol:"$",name:"US Dollar",flag:"🇺🇸"},
+ {code:"EUR",symbol:"€",name:"Euro",flag:"🇪🇺"},
+ {code:"GBP",symbol:"£",name:"British Pound",flag:"🇬🇧"},
+ {code:"JPY",symbol:"¥",name:"Japanese Yen",flag:"🇯🇵"},
+ {code:"AED",symbol:"د.إ",name:"UAE Dirham",flag:"🇦🇪"},
+ {code:"CAD",symbol:"C$",name:"Canadian Dollar",flag:"🇨🇦"},
+ {code:"AUD",symbol:"A$",name:"Australian Dollar",flag:"🇦🇺"},
+ {code:"SGD",symbol:"S$",name:"Singapore Dollar",flag:"🇸🇬"},
+ {code:"CHF",symbol:"CHF",name:"Swiss Franc",flag:"🇨🇭"}
+];
 
-IMPORTANT:
-1. Use ONLY the Supabase Publishable key.
-2. NEVER put the sb_secret key in this file.
-3. Replace YOUR_PUBLISHABLE_KEY below with the complete
-   sb_publishable_... key from Supabase.
+let selected=currencies[0];
+let participants=Number(localStorage.getItem("oc_participants")||1248);
 
-Supabase project URL:
-https://ucqamsjvvnqwpvjgbbgq.supabase.co
-*/
-
-const SUPABASE_URL = "https://ucqamsjvvnqwpvjgbbgq.supabase.co";
-
-/*
-Paste your COMPLETE publishable key between the quotes.
-Example:
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_xxxxxxxxx";
-*/
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_v44qa8_9Kc6osHQ-dXZupA_3fSz-wCF";
-
-let selectedCurrency = "INR";
-
-const totalEl = document.getElementById("total");
-const selectedTotalEl = document.getElementById("selectedTotal");
-const selectedLabelEl = document.getElementById("selectedLabel");
-const joinButton = document.getElementById("joinButton");
-const statusEl = document.getElementById("status");
-const debugEl = document.getElementById("debug");
-
-function setStatus(message, type = "") {
-  statusEl.textContent = message;
-  statusEl.className = "status " + type;
-}
-
-function showError(message, details = "") {
-  setStatus(message, "error");
-  debugEl.style.display = "block";
-  debugEl.textContent = details ? message + "\n\n" + details : message;
-  console.error(message, details);
-}
-
-function hideError() {
-  debugEl.style.display = "none";
-  debugEl.textContent = "";
-}
-
-function apiHeaders() {
-  return {
-    "apikey": SUPABASE_PUBLISHABLE_KEY,
-    "Authorization": "Bearer " + SUPABASE_PUBLISHABLE_KEY,
-    "Content-Type": "application/json"
-  };
-}
-
-function checkConfiguration() {
-  if (
-    !SUPABASE_PUBLISHABLE_KEY ||
-    SUPABASE_PUBLISHABLE_KEY === "sb_publishable_v44qa8_9Kc6osHQ-dXZupA_3fSz-wCF" ||
-    !SUPABASE_PUBLISHABLE_KEY.startsWith("sb_publishable_")
-  ) {
-    showError(
-      "Supabase publishable key is not configured.",
-      "Open this index.html in GitHub, find SUPABASE_PUBLISHABLE_KEY, and replace the placeholder with your complete sb_publishable_... key."
-    );
-    return false;
-  }
-  return true;
-}
-
-async function loadStats() {
-  if (!checkConfiguration()) return;
-
-  try {
-    setStatus("Loading live database...", "");
-    hideError();
-
-    const response = await fetch(
-      SUPABASE_URL + "/rest/v1/rpc/get_challenge_stats",
-      {
-        method: "POST",
-        headers: apiHeaders(),
-        body: JSON.stringify({
-          p_currency: selectedCurrency
-        })
-      }
-    );
-
-    const text = await response.text();
-
-    if (!response.ok) {
-      throw new Error(
-        "HTTP " + response.status + " " + response.statusText + "\n" + text
-      );
-    }
-
-    let data;
-    try {
-      data = JSON.parse(text);
-    } catch (e) {
-      throw new Error("Supabase returned invalid JSON:\n" + text);
-    }
-
-    totalEl.textContent = Number(data.total_participants ?? 0).toLocaleString();
-    selectedTotalEl.textContent =
-      Number(data.selected_currency_participants ?? 0).toLocaleString();
-    selectedLabelEl.textContent = selectedCurrency + " Participants";
-
-    setStatus("Database connected • Live", "ok");
-  } catch (error) {
-    totalEl.textContent = "—";
-    selectedTotalEl.textContent = "—";
-
-    showError(
-      "Database connection failed.",
-      error && error.message ? error.message : String(error)
-    );
-  }
-}
-
-async function joinChallenge() {
-  if (!checkConfiguration()) return;
-
-  joinButton.disabled = true;
-  joinButton.textContent = "Recording...";
-
-  try {
-    hideError();
-    setStatus("Recording participation...", "");
-
-    const response = await fetch(
-      SUPABASE_URL + "/rest/v1/rpc/join_challenge",
-      {
-        method: "POST",
-        headers: {
-          ...apiHeaders(),
-          "Prefer": "return=representation"
-        },
-        body: JSON.stringify({
-          p_currency: selectedCurrency
-        })
-      }
-    );
-
-    const text = await response.text();
-
-    if (!response.ok) {
-      throw new Error(
-        "HTTP " + response.status + " " + response.statusText + "\n" + text
-      );
-    }
-
-    let data;
-    try {
-      data = JSON.parse(text);
-    } catch (e) {
-      throw new Error("Supabase returned invalid JSON:\n" + text);
-    }
-
-    /*
-      join_challenge returns an object like:
-      {
-        participation_id: 6,
-        total_participants: 6,
-        selected_currency_participants: 5
-      }
-    */
-    const result = Array.isArray(data) ? data[0] : data;
-
-    if (!result) {
-      throw new Error("Participation was recorded but no response data was returned.");
-    }
-
-    if (result.total_participants !== undefined) {
-      totalEl.textContent =
-        Number(result.total_participants).toLocaleString();
-    }
-
-    if (result.selected_currency_participants !== undefined) {
-      selectedTotalEl.textContent =
-        Number(result.selected_currency_participants).toLocaleString();
-    }
-
-    selectedLabelEl.textContent = selectedCurrency + " Participants";
-
-    setStatus(
-      "Participation recorded successfully! 🎉",
-      "ok"
-    );
-
-    joinButton.textContent = "Joined ✓";
-
-    /*
-      Reload from the database as a second confirmation.
-    */
-    await loadStats();
-
-    setTimeout(() => {
-      joinButton.disabled = false;
-      joinButton.textContent = "Join " + selectedCurrency + " Challenge";
-    }, 1200);
-
-  } catch (error) {
-    joinButton.disabled = false;
-    joinButton.textContent = "Join " + selectedCurrency + " Challenge";
-
-    showError(
-      "Could not record participation.",
-      error && error.message ? error.message : String(error)
-    );
-  }
-}
-
-function selectCurrency(code) {
-  selectedCurrency = code;
-
-  document.querySelectorAll(".currency").forEach(button => {
-    button.classList.toggle(
-      "selected",
-      button.dataset.code === code
-    );
-  });
-
-  joinButton.textContent = "Join " + code + " Challenge";
-  selectedLabelEl.textContent = code + " Participants";
-
-  loadStats();
-}
-
-document.querySelectorAll(".currency").forEach(button => {
-  button.addEventListener("click", () => {
-    selectCurrency(button.dataset.code);
-  });
+const grid=document.getElementById("currencies");
+currencies.forEach(c=>{
+ const el=document.createElement("button");
+ el.className="currency"+(c.code==="INR"?" active":"");
+ el.innerHTML=`<div class="flag">${c.flag}</div><div class="symbol">${c.symbol}</div><div class="name">${c.code}</div>`;
+ el.onclick=()=>selectCurrency(c,el);
+ grid.appendChild(el);
 });
 
-joinButton.addEventListener("click", joinChallenge);
-
-/*
-Initial connection.
-*/
-window.addEventListener("DOMContentLoaded", () => {
-  loadStats();
+function selectCurrency(c,el){
+ selected=c;
+ document.querySelectorAll(".currency").forEach(x=>x.classList.remove("active"));
+ el.classList.add("active");
+ update();
+}
+function update(){
+ document.getElementById("amount").textContent=selected.symbol+"1";
+ document.getElementById("joinBtn").textContent="Join the "+selected.symbol+"1 Challenge";
+ document.getElementById("participants").textContent=participants.toLocaleString();
+ document.getElementById("total").textContent=selected.symbol+participants.toLocaleString();
+ const pct=Math.min(participants/1000000*100,100);
+ document.getElementById("bar").style.width=pct+"%";
+ document.getElementById("percent").textContent=pct.toFixed(2)+"% of the goal";
+}
+document.getElementById("joinBtn").onclick=()=>{
+ participants++;
+ localStorage.setItem("oc_participants",participants);
+ addActivity();
+ update();
+};
+function addActivity(){
+ const a=document.createElement("div"); a.className="activity";
+ a.innerHTML=`<div class="dot"></div><div><b>Someone joined</b> the ${selected.symbol}1 challenge<br><small>Just now • Demo participation</small></div>`;
+ document.getElementById("activity").prepend(a);
+}
+["INR","USD","EUR","GBP"].forEach((x,i)=>{
+ const c=currencies.find(v=>v.code===x);
+ const a=document.createElement("div");a.className="activity";
+ a.innerHTML=`<div class="dot"></div><div><b>Participant #${1248-i}</b> joined the ${c.symbol}1 challenge<br><small>${i+1} minute${i?"s":""} ago • Demo activity</small></div>`;
+ document.getElementById("activity").appendChild(a);
 });
+update();
 </script>
-
 </body>
 </html>
