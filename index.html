@@ -30,7 +30,13 @@ h1{font-size:clamp(42px,7vw,76px);line-height:.98;letter-spacing:-3px;margin:22p
 .challenge{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:stretch}
 .amount{font-size:60px;font-weight:900;letter-spacing:-2px;margin:4px 0}
 .cta{width:100%;border:0;border-radius:16px;padding:16px;font-size:17px;font-weight:800;background:linear-gradient(90deg,#2563eb,#7c3aed);color:#fff;cursor:pointer;box-shadow:0 12px 25px rgba(37,99,235,.22)}
-.cta:hover{filter:brightness(1.05)}.note{font-size:12px;color:var(--muted);margin-top:11px;line-height:1.5}
+.cta:hover{filter:brightness(1.05)}.cta:disabled{opacity:.65;cursor:not-allowed}
+.note{font-size:12px;color:var(--muted);margin-top:11px;line-height:1.5}
+.status{margin-top:12px;padding:12px 14px;border-radius:12px;font-size:13px;display:none;line-height:1.5}
+.status.ok{display:block;background:#ecfdf5;color:#047857;border:1px solid #a7f3d0}
+.status.err{display:block;background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
+.status.info{display:block;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
+.error-box{margin-top:10px;padding:12px;background:#111827;color:#fca5a5;border-radius:12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;white-space:pre-wrap;word-break:break-word;display:none}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .stat{padding:20px;background:#f8fafc;border:1px solid var(--line);border-radius:18px}.stat b{font-size:28px}.stat span{display:block;color:var(--muted);font-size:12px;margin-top:5px}
 .progress{height:12px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin:15px 0}.bar{height:100%;width:0;background:linear-gradient(90deg,#2563eb,#7c3aed);transition:width .4s}
@@ -44,7 +50,7 @@ footer{padding:35px 0 55px;text-align:center;color:var(--muted);font-size:13px}
 </head>
 <body>
 <header class="container">
-<nav><div class="logo">One<span>Challenge</span></div><div class="nav-pill">Version 1 • Personal</div></nav>
+<nav><div class="logo">One<span>Challenge</span></div><div class="nav-pill">Version 3.1 • Supabase</div></nav>
 </header>
 
 <main class="container">
@@ -66,31 +72,56 @@ footer{padding:35px 0 55px;text-align:center;color:var(--muted);font-size:13px}
       <div class="sub">Your challenge amount</div>
       <div class="amount" id="amount">₹1</div>
       <button class="cta" id="joinBtn">Join the ₹1 Challenge</button>
-      <div class="note">Demo mode: this button records participation locally in your browser. No real payment is processed in Version 1.</div>
+      <div id="status" class="status"></div>
+      <div id="errorBox" class="error-box"></div>
+      <div class="note">No payment is processed. This button records one participation in the Supabase database.</div>
     </div>
     <div>
       <div class="sub">Challenge progress</div>
       <div class="stats">
-        <div class="stat"><b id="participants">1,248</b><span>Participants</span></div>
-        <div class="stat"><b id="total">₹1,248</b><span>Demo total</span></div>
+        <div class="stat"><b id="participants">0</b><span>Participants</span></div>
+        <div class="stat"><b id="total">₹0</b><span>Selected currency</span></div>
         <div class="stat"><b>1M</b><span>Goal</span></div>
       </div>
       <div class="progress"><div class="bar" id="bar"></div></div>
-      <div class="sub" id="percent">0.12% of the goal</div>
+      <div class="sub" id="percent">0% of the goal</div>
     </div>
   </div>
 </section>
 
 <section class="panel">
   <h2>Recent activity</h2>
-  <p class="sub">Demo activity shown for the prototype.</p>
+  <p class="sub">Live database participation will appear here.</p>
   <div id="activity"></div>
 </section>
 </main>
 
-<footer>© 2026 OneChallenge • Personal prototype • No real payments are processed.</footer>
+<footer>© 2026 OneChallenge • Supabase database version • No real payments are processed.</footer>
 
 <script>
+/*
+===========================================================
+ONE CURRENCY CHALLENGE - V3.1
+===========================================================
+IMPORTANT:
+1. There is ONLY ONE Supabase configuration in this file.
+2. Put your PUBLIC Supabase key below.
+3. Accepts both:
+   - sb_publishable_...
+   - legacy eyJ... anon key
+4. DO NOT put a sb_secret_... key here.
+5. No Supabase JavaScript library is required.
+6. Calls these existing database functions directly:
+   - public.join_challenge(text)
+   - public.get_challenge_stats(text)
+===========================================================
+*/
+
+const SUPABASE_URL = "https://ucqamsjvvnqwpvjgbbgq.supabase.co";
+
+/* PASTE YOUR COMPLETE PUBLIC KEY BETWEEN THE QUOTES */
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjcWFtc2p2dm5xd3B2amdnYmJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0ODQ1MzYsImV4cCI6MjEwMzA2MDUzNn0.MArrkvlvP-WpnkZReAteDm2Ymic4udHj1lT7VkaEXzk";
+
 const currencies=[
  {code:"INR",symbol:"₹",name:"Indian Rupee",flag:"🇮🇳"},
  {code:"USD",symbol:"$",name:"US Dollar",flag:"🇺🇸"},
@@ -105,11 +136,16 @@ const currencies=[
 ];
 
 let selected=currencies[0];
-let participants=Number(localStorage.getItem("oc_participants")||1248);
+let currentStats={total_participants:0,selected_currency_participants:0};
 
 const grid=document.getElementById("currencies");
+const joinBtn=document.getElementById("joinBtn");
+const statusEl=document.getElementById("status");
+const errorBox=document.getElementById("errorBox");
+
 currencies.forEach(c=>{
  const el=document.createElement("button");
+ el.type="button";
  el.className="currency"+(c.code==="INR"?" active":"");
  el.innerHTML=`<div class="flag">${c.flag}</div><div class="symbol">${c.symbol}</div><div class="name">${c.code}</div>`;
  el.onclick=()=>selectCurrency(c,el);
@@ -120,35 +156,186 @@ function selectCurrency(c,el){
  selected=c;
  document.querySelectorAll(".currency").forEach(x=>x.classList.remove("active"));
  el.classList.add("active");
- update();
+ updateDisplay();
+ loadStats();
 }
-function update(){
+
+function setStatus(message,type="info",details=""){
+ statusEl.className="status "+type;
+ statusEl.textContent=message;
+ if(details){
+   errorBox.style.display="block";
+   errorBox.textContent=details;
+ }else{
+   errorBox.style.display="none";
+   errorBox.textContent="";
+ }
+}
+
+function updateDisplay(){
  document.getElementById("amount").textContent=selected.symbol+"1";
- document.getElementById("joinBtn").textContent="Join the "+selected.symbol+"1 Challenge";
- document.getElementById("participants").textContent=participants.toLocaleString();
- document.getElementById("total").textContent=selected.symbol+participants.toLocaleString();
- const pct=Math.min(participants/1000000*100,100);
+ joinBtn.textContent="Join the "+selected.symbol+"1 Challenge";
+
+ const total=Number(currentStats.total_participants||0);
+ const selectedCount=Number(currentStats.selected_currency_participants||0);
+
+ document.getElementById("participants").textContent=total.toLocaleString();
+ document.getElementById("total").textContent=selected.symbol+selectedCount.toLocaleString();
+
+ const pct=Math.min(total/1000000*100,100);
  document.getElementById("bar").style.width=pct+"%";
  document.getElementById("percent").textContent=pct.toFixed(2)+"% of the goal";
 }
-document.getElementById("joinBtn").onclick=()=>{
- participants++;
- localStorage.setItem("oc_participants",participants);
- addActivity();
- update();
-};
+
+function checkConfiguration(){
+ if(!SUPABASE_KEY ||
+    SUPABASE_KEY.includes("PASTE_YOUR") ||
+    !(SUPABASE_KEY.startsWith("sb_publishable_") || SUPABASE_KEY.startsWith("eyJ"))){
+   setStatus(
+     "Supabase public key is not configured correctly.",
+     "err",
+     "Expected a key beginning with sb_publishable_ or eyJ... . Do not use sb_secret_..."
+   );
+   return false;
+ }
+ return true;
+}
+
+async function supabaseFetch(path,options={}){
+ const headers={
+   "apikey":SUPABASE_KEY,
+   "Authorization":"Bearer "+SUPABASE_KEY,
+   "Content-Type":"application/json",
+   "Accept":"application/json",
+   ...(options.headers||{})
+ };
+
+ const response=await fetch(SUPABASE_URL+path,{
+   ...options,
+   headers
+ });
+
+ const raw=await response.text();
+
+ let data=null;
+ try{
+   data=raw?JSON.parse(raw):null;
+ }catch(e){
+   data=raw;
+ }
+
+ if(!response.ok){
+   const message =
+     (data && data.message) ||
+     (data && data.error_description) ||
+     (data && data.error) ||
+     raw ||
+     ("HTTP "+response.status);
+
+   throw new Error("HTTP "+response.status+" — "+message);
+ }
+
+ return data;
+}
+
+async function loadStats(){
+ if(!checkConfiguration()) return;
+
+ try{
+   const data=await supabaseFetch(
+     "/rest/v1/rpc/get_challenge_stats",
+     {
+       method:"POST",
+       body:JSON.stringify({p_currency:selected.code})
+     }
+   );
+
+   /*
+     PostgREST may return the function result directly as an object.
+   */
+   const result=Array.isArray(data)?data[0]:data;
+
+   currentStats={
+     total_participants:Number(result?.total_participants||0),
+     selected_currency_participants:Number(result?.selected_currency_participants||0)
+   };
+
+   updateDisplay();
+   setStatus("Live database connected.","ok");
+ }catch(error){
+   console.error("get_challenge_stats error:",error);
+   setStatus(
+     "Could not load the live database.",
+     "err",
+     error.message
+   );
+ }
+}
+
+async function joinChallenge(){
+ if(!checkConfiguration()) return;
+
+ joinBtn.disabled=true;
+ setStatus("Recording your participation...","info");
+
+ try{
+   const data=await supabaseFetch(
+     "/rest/v1/rpc/join_challenge",
+     {
+       method:"POST",
+       body:JSON.stringify({p_currency:selected.code})
+     }
+   );
+
+   const result=Array.isArray(data)?data[0]:data;
+
+   setStatus(
+     "Participation recorded successfully! 🎉",
+     "ok"
+   );
+
+   addActivity();
+
+   if(result){
+     currentStats={
+       total_participants:Number(result.total_participants||0),
+       selected_currency_participants:Number(result.selected_currency_participants||0)
+     };
+     updateDisplay();
+   }
+
+   /* Reload from database so the displayed numbers are authoritative. */
+   await loadStats();
+
+ }catch(error){
+   console.error("join_challenge error:",error);
+
+   setStatus(
+     "Could not record participation.",
+     "err",
+     error.message
+   );
+ }finally{
+   joinBtn.disabled=false;
+ }
+}
+
 function addActivity(){
- const a=document.createElement("div"); a.className="activity";
- a.innerHTML=`<div class="dot"></div><div><b>Someone joined</b> the ${selected.symbol}1 challenge<br><small>Just now • Demo participation</small></div>`;
+ const a=document.createElement("div");
+ a.className="activity";
+ a.innerHTML=
+   `<div class="dot"></div>
+    <div><b>Someone joined</b> the ${selected.symbol}1 challenge<br>
+    <small>Just now • Live database participation</small></div>`;
  document.getElementById("activity").prepend(a);
 }
-["INR","USD","EUR","GBP"].forEach((x,i)=>{
- const c=currencies.find(v=>v.code===x);
- const a=document.createElement("div");a.className="activity";
- a.innerHTML=`<div class="dot"></div><div><b>Participant #${1248-i}</b> joined the ${c.symbol}1 challenge<br><small>${i+1} minute${i?"s":""} ago • Demo activity</small></div>`;
- document.getElementById("activity").appendChild(a);
-});
-update();
+
+joinBtn.addEventListener("click",joinChallenge);
+
+updateDisplay();
+
+/* Start by loading the actual database values. */
+loadStats();
 </script>
 </body>
 </html>
